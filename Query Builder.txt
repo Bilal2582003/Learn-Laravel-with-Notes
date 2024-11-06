@@ -1,0 +1,63 @@
+1. Query builder query likny ka triqa ha laravel ma.
+2. Query builder php ka PDO method use karta ha.
+3. Query builder ka use controller ki file ma karty hn.
+3. Sab sy phly controller ki file bana lo.
+  php artisan make:controller controllerName
+4. Query builder use karny ka liye DB ki file include karna lazmi.
+ use illuminate\Support\Facades\DB;
+
+----- get(), insert(), update(), delete() -------
+
+SELECT * from users
+DB::table('tableName')->get();
+
+Select * from users where city = 'karachi' and age > 18
+DB::table('users')->where('city','=','karachi')->where('age','>',18)->get();
+
+Select * from users where city = 'karachi' or age > 18
+DB::table('users')->where('city','=','karachi')->orWhere('age','>',18)->get(); 
+
+SELECT * from users where id = 1;
+DB::table('users')->where('id', 1)->get();
+DB::table('users')->find(1) 
+
+SELECT * from users distinct city
+DB::table('users')->distinct()->get();
+DB::table('users')->plunk('city');
+
+SELECT * from users where age between 10 and 40;
+DB::table('users')->whereBetween('age',[10,40])->get();
+
+whereBetween('age',[10,40]);
+whereNotBetween('age',[10,40]);
+orWhereBetween('age',[10,40]);
+orWhereNotBetween('age',[10,40]);
+whereIn('id',[1,2,10,12]);
+whereNotIn('id',[1,2,10,12]);
+whereNull('email');
+whereDate('created_at', '2024-10-13');   Bhly date ka sat time ho koi issue nh ha use karskty hn
+whereMonth('created_at', '6');
+whereDay('created_at', '27');
+whereYear('created_at', '2023');
+whereTime('created_at', '08:10:30');
+
+DB::table('users')->where('is_active', 1)->exists();   --it return true or false
+DB::table('users')->where('is_active', 1)->doesntExist();   --it return true or false
+
+->orderBy('colName');
+->orderBy('colName', 'DESC');
+
+DB::table('users')->first()     --it returns first row data
+DB::table('users')->latest()->first()  Or DB::table('users')->oldest()->first();    --it returns last row data
+DB::table('users')->inRandamOrder()->first();   --it return row data in random order
+
+
+->limit(3) OR ->take(3)
+->offset(2) OR ->skip(2)  --it's get data after give number row data 
+
+
+->count();  --it count number of rows
+->max('age')  --it get max value data
+->min('age')   --it get min vale data
+->avg('age')  --it give average value
+->sum('age')   --it sum values

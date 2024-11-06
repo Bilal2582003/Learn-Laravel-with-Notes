@@ -1,0 +1,48 @@
+------ Consider 2 tables student and city ------
+1. Student table has columns (id, name, age, city_id).
+2. City table has columns (id, name).
+
+student->id is primary key And city id is also primary key while city_id is Foreign key in student table.
+---- Primary Key -----
+$table->integer(id);
+$table->primary('id')->autoIncremnet();
+
+----- Foreign key -----
+$table->integer('city_id');
+$table-foreign('city_id')->references('id')->on('city');
+
+-----Cascade----
+1. Jab ham edit or delete karty hn to foreign key m bh khud ma khud change hojaye to ham cascade use karty hn.
+       $table->foreign('city_id')->references('id')->on('city')->onUpdate('cascade')->onDelete('cascade');
+
+2. Agar ham main table sy column delete karden so children table ka data null hojaye. 
+       $table->foreign('city_id')->references('id')->on('city')->onUpdate('cascade')->onDelete('set null');
+------ Restrict ------
+1 cascade ki jagha restrict bh use hota ha.
+  magar ussy children table ma koi effect nahi hota jesy cascade pr update and delete pr effect hota h.
+
+------ Foreign key With cascade & Restrict -------
+1. ->cascadeOnUpdate();
+2. ->cascadeOnDelete();
+3. ->restrictOnUpdate();
+4. ->restrictOnDelete();
+5. ->nullOnDelete();
+
+------ Foreign key making diffrent ways ------
+1. $table->foreign('city_id')->references('id')->on('city');
+
+  foreignId automatice make this column (beignt and unsigned) and
+  constrained direct table ka name lyta ha ye automatic us table sy primary key search kryga 
+  and usko foreign key sy connect kardyga
+2. $table->foreignId('city_id')->constrained('city');
+
+3. $table->unsignedBigInteger('tableName_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+  or
+
+4. $table->unsignedBigInteger('stu_id')->constrained('tableName')->cascadeOnUpdate()->cascadeOnDelete();
+
+
+-------- Delete contraint ---------
+$table->dropForeign(['columnName']);
+$table->dropPrimary(['columnName']);
+

@@ -1,0 +1,46 @@
+-----create Database-----
+CREATE DATABASE laravel-db 
+or
+As we make Database from php myadmin
+
+----- set name in .env file-----
+1. env file ma DB_CONNECTION = mysql
+2. env file ma DB_DATABASE = your-Database-name-here.
+4. config/database.php ma 'default'=>env('DB_CONNECTION','mysql'). 
+3. config/database.php ma utf set karna hoga vo apny phpmyadmin ma lehaz sy set karlo.
+ 
+---- Now make Migration -----
+cmd-> php artisan make:migration create_tableName_table
+
+ye command chlany sy database ma migration ki file banjaygi. Now table creation
+
+public function up()void{
+	Schema::create('tableName',function(Blueprint $table){
+  	$table->id; -->> it make id column and make it primary key
+	$table->string('name',200);
+	$table->string('city',50);
+	$table->timestamps(); --> it make created_at and updated_at coulmn automatically 
+	});
+}
+Now run commad -> php artisan migrate
+this comman will make table in database
+-----check migration status-----
+php artisan migrate:status
+1. Ye command show krygi ka kitni migrations migrate ho chuki hn or kitni nahi hoi hn.
+
+----- roll back ------
+php artisan migrate:rollback
+1. Agar last ma jo migrate kia ha usko undo karny ka liye command
+php artisan migrate:rollback --step=3
+ye command last 3 bar jo migration file chlai ha usko undo kardygi
+
+----- Reset use for empty whole databse -----
+php artisan migrate:reset
+it will reset or empty or delete all tables from database.
+
+----- Refresh use for rollback all migration and remake all again -----
+php artisan migrate:refresh
+
+----- Fresh use for drop all table and make tables again ------
+php artisan migration:freash
+

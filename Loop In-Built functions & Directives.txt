@@ -1,0 +1,28 @@
+1- $loop->index start with 0.
+2. $loop->itration start with 1.
+3. $loop->count shows total counter of array.
+4. $loop->depth shows nested loop.
+5. $loop->parent can use for parent loop.
+6. $loop->first use in if condition for apply logic on first value.
+7. $loop->last use in if condition for apply login on last value.
+8. $loop->odd use in if condition on odd itration.
+9. $loop->even use in if condition on even itration. 
+
+-----Directives uses in Blade templates for make it reuseable.
+1. @include()
+2. @extend()
+3. @yeild()
+4. @section()
+
+-----@include with parameter----
+ @include('page_name',['key'=>'value']) 
+ and jis page ka name ha include ma us page ma key value ko use karskty hn
+
+-----@includeif()-----
+ @includeif('page_name') agar file hogi to include karyga wrna chor dyga 
+
+-----@includeWhen & @includeUnless-----
+@includeWhen('Condition Value','page_name', ['key'=>value])
+1. Condition value ma sirf True/False ata ha.
+2. includeWhen ma condition ma True hoga to file include hogi.
+3. includeUnless ma condition ma False hoga to file include hoginf

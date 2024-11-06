@@ -1,0 +1,26 @@
+1. Agar ham route change karty hn and user wahi route call karta ha to ham log redirect method use karty hn.
+	
+-----Route Redirection-----
+ Route::redirect('old_url', 'new_url');
+
+-----Route Group/Prefix-----
+1. It is use for make a group of routes. In case of similar URLs.
+
+ Route::prefix('similar_url_name')->group(function(){
+   	Route::get('/Home',function(){
+	   return view('index');
+	});
+
+	Route::get('/About',function(){
+	  return view('about');
+	});
+ });
+
+ Result After Prefix -> Now URL will show like ('similar_url_name/Home', 'similar_url_name/About' )
+
+-----If we did not make URL but user want to hit that page so redirect to (NOT FOUND PAGE)------
+	Route::fallback(function(){
+	return "<h1>Page is not found!</h1>";
+	});
+
+

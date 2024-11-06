@@ -1,0 +1,56 @@
+if we want to ignore or did not make timestamp column in our database so add this line in model file
+
+public $timestamps = false;
+
+--- insert ---
+ DB::table('users')->insert([
+  'col_1'=>'value',
+  'col_2'=>'value'
+ ]);
+
+---- This is use for ignore if there is already exists error or any other error in query ----
+ DB::table('users')->insertOrIgnore([
+  'col_1'=>'value',
+  'col_2'=>'value'
+ ])
+
+
+----- upsert() ----
+1. ye do array as a parameter lyta ha fisrt all insert wali value and second unique column name.
+2. agar unique column ki value already hogi to vo data update hoga wrna insert hojayga
+ DB::table('users')->upsert(
+  [
+   'col_1'=>'value',
+   'col_2'=>'value'
+  ],
+  ['email']
+ );
+3. iska 3rd parameter bh hoga ha array form ma us ma agr value already values hoto
+   kin kin column ko update karna ha vo sab wahan likh do.
+ DB::table('users')->upsert(
+  [
+   'col_1'=>'value',
+   'col_2'=>'value'
+  ],
+  ['email'],
+  ['city']
+ );
+
+
+->insertGetId   --now ye function return ma id dyga and table ma auto increment id hoga tohi kam kryga
+
+
+	------- Update -------
+ DB::table('users')->where('id',1)->update([
+  'city'=>'karachi'
+ ]);
+  ----- for update second parameter ma jitny numbers sy increment karna ha vo likhna ha -------
+ Db::table('users')->where('id',1)->increment('age') Or ->increment('age', 4) Or increment('age', ['city'=>'Karachi'])  
+ Db::table('users')->where('id',1)->decrement('age') Or ->decrement('age', 4) Or decrement('age', ['city'=>'Karachi'])  --> for update second parameter ma jitny numbers sy increment karna ha vo likhna ha
+
+
+	------- Delete -------
+DB::table('users')->where('id',2)->delete();
+
+DB::table('users')->trancate()     -->it remve all data and id will automatic reset
+

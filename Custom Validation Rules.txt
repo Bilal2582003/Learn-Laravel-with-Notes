@@ -1,0 +1,52 @@
+-- Custom Validation Rules 2 triqy sy lagai jati hn.
+ 
+1. Using Rules Objects      isko ham multiple time apny project ma use karskty hn.
+2. Use Closure              isko ham sirf 1 bar use karskty hn.
+
+---- Using rules object ----
+1. php artisan make:rule fileName
+ ye run karny sy app\Rules\fileName.php file ban jaygi. jis ma file ka name ki class hogi.
+ is file ma hmen validate name sy public function milta ha jis ma 3 parameter hoty hn
+ attribute, values, closure. Agar hmari validation kam nahi karti to closure wala parameter run hojata ha jis sy hm message show karty hn.
+  
+  Class fileName implements ValidationRule{
+    public funciton validate(string $attribute, mixed $value, Closure $fail){
+      if(strtoupper($value) !== $value){
+	$fail('The :attribute must have uppercase value!');
+      }
+    }
+  }
+
+2. Controller ma jo file bnygi usko use karna ha.
+  hmen apna khud ka rule use karny ka liye phly [] square braces lagany hn and us ma apni file ka name rkhna h.
+
+  use App\Rules\Uppercase;
+
+ public function addUser(Request $req){
+   $req->validate([
+     'username' => ['required', new Uppercase];
+     'useremail' => 'required|email',
+   ]);
+	
+   return $req->all();
+  
+}
+
+------- Using Closure -------
+1. use illumninate\Support\Facades\Validator;
+2. use Closure;
+3. is ma ham direct kam controller ma karty hn. hmen koi 3rd file creation ki need nahi ha.
+ 
+public function addUser(Request $req)
+{
+  $validate = $req->validate([
+	'username' => ['request',
+	function(string $attribute; mixed $value, Closure $fail){
+         if($value !== strtoupper($value)){
+		$fail('The :$attribute must uppercase');
+            }
+	  }],
+  ]);
+}
+
+ 

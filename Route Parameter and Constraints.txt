@@ -1,0 +1,39 @@
+Route::get('/Post/{id}',function(String $id){
+return 'User Id'. $id;
+})
+1. agar route ma id nahi milygi 404 not found error ayga.
+2. Parameter ko optional banany ka liye ? add kro parameter ka bad ( get('/Post/{id?}') ).
+   and function ma = null bhe add krdo like function(String $id = null).
+
+--------Now ye parameter optional ban chuka ha-----------
+Route::get('/Post/{id?}',function(String $id = null){
+return 'User Id'. $id;
+})
+
+-----Multiple parameter------
+Route::get('/Post/{id}/{name}',function(string $id, string $userName){
+return 'User Id'. $id.' user name '.$userName;
+})
+
+----Route Constaints-----
+Def: Agar ham cahty hn parameter per conditions lagana.
+     Jesy paramerter (number ma hoga ya alphabate ma, Koi special Cherachter ayga ya nh,
+     regular expretion kisi bh kisam ki).
+1. For Alphabate use --> whereAlpha('parameter_name').
+2. For number use --> whereNumber('parameter_name').
+3. For Alphanumeric (both) use --> whereAlphaNumeric('parameter_name').
+4. Agr kuch special parameter ki values get karna cahty hn so use 
+   --> whereIn('parameter_name',['movie','song','anthum']); 
+5. For user Regular expresion use --> where('parameter_name','[0-9]+')
+
+   Route::get('/Post/{id}',function(String $id){
+   return 'User Id'. $id;
+   })->whereNumber('id')
+
+------ about_if()  route ma value ha jo array ma exits nh karti to 404 error show tactik-----
+$user = [
+1=>['name'=>'bila','phone'=>'030301'],
+2=>['name'=>'raza','phone'=>'030301'],
+];
+
+abort_if(!isset($user[$id]), 404);

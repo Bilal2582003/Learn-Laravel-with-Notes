@@ -1,0 +1,89 @@
+----- Seeder -----
+1. laravel has 2 type for adding data in database namely Seeder and Factory.
+2. Seeder use for adding real data in DB.
+3. Factory use for fake data in DB.
+
+----first make model----- 
+  php artisan make:model student   (table ka name singular ayga ye hmesha yad rkhen).
+
+-----Now make Seeder file-----
+  php artisan make:seeder tableNameSeeder  (tabler ka name singular ayga and uska agye Seeder likhna lazmi ha).
+
+1. Now seeder file ma "public function run():void" milyga is ma code karna hota h.
+
+----- For create Data By Seeder ------ 
+  tableName::create([
+     'columnName'=>'value',
+     'columnName'=>'value' 
+   ]);
+
+2. Seeder/DatabaseSeeder.php Ka folder ma $this->call([ 
+    SeederFileName::class  
+    ]);
+3. Run this command for making seeding data in DB -> php artisan db:seed.
+
+----- For insert multiple Data -----
+ $array = collect([
+   [
+    'colName'=>'value',
+    'colName'=>'value'
+   ],
+   [
+    'colName'=>'value',
+    'colName'=>'value'
+   ],
+   [
+    'colName'=>'value',
+    'colName'=>'value'
+   ]
+ ]);
+ 
+ $array->each(function($arr){
+   tableName::insert($arr);
+ });
+
+
+--------- If we want to seed only one seed class so run this cmd --------
+php artisan db:seed --class=SeederFileName
+
+
+-------- if we want to insert a lot of data so we make json folder in database folder and make a file in json folder in which we put our whole array that we want to insert in DB -------
+database/json/abc.json
+[
+ {
+   'col':'val',
+   'col':'val'
+ },
+ {
+   'col':'val',
+   'col':'val'
+ }
+]
+Now get this json file in your seeder file
+1. include Fascade realted to file
+   
+   $json = File::get(path:'database/json/fileName.json');
+   $array = collect(json_encode($json));
+   $array->each(function($arr){
+     tableName::create([
+	'col'=> $arr->name,
+	'col'=> $arr->email
+     ]);
+   });
+
+
+
+------- if you want Fake data by seeder -----
+for($i = 0 ; $i < 10 ; $i++){
+
+  tableName->create([
+   'col'=> fake()->name(),
+   'col'=>fake()->unique()->email()
+  ]);
+
+}
+
+
+
+
+

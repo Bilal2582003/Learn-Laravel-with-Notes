@@ -1,0 +1,47 @@
+------- Steps for add dummy data by factory ------
+1. php artisan make:model student.
+2. php artisan make:factory StudentFactory(tableNameFactory).
+3. file factory ma folder ma create hojayegi and ye file last ma array return karti ha.
+ class StudentFactory extends Factory{
+  public function definition(): array{
+   return [
+   'col'=>fake()->name(),
+   'col'=>fake()->email()
+   ];
+  }
+ }
+4. Seeders/DatabaseSeeder.php
+   use App\Model\student(tableName);
+   student::factory()->count(5)->create();
+
+5. php artisan db:seed
+
+----- factory function ko seeder file ma use karna -----
+1. php artisan make:model student.
+2. php artisan make:factory StudentFactory(tableNameFactory).
+3. file factory ma folder ma create hojayegi and ye file last ma array return karti ha.
+ class StudentFactory extends Factory{
+  public function definition(): array{
+   return [
+   'col'=>fake()->name(),
+   'col'=>fake()->email()
+   ];
+  }
+ }
+4. Seeder ki file ma jao and wahan model include kro or factory wala code kro.
+   use App\Model\student(tableName);
+   student::factory()->count(5)->create();
+
+5. DatabaseSeeder.php ki file ma set kro
+   $this->call([
+    SeederFileName::class
+   ]);
+
+
+---- Factory Commands-----
+php artisan make:factory StudentFactory
+php artisan make:factory StudentFactory --model=Studnet     (ye command seeder and model dono create kardygi)
+php artisan make:model estudent -f    ( ye command model & factory dono file create kardygi )
+php artisan db:seed
+php artisan db:seed --class=StudentFactory   (ye commadn sirf StudentFactory wali file ko seed krygi)
+php artisan migrate:fresh --seed  (ye command sary tabel drop keygi and dobara create krygi then seeding bh run kardygi)

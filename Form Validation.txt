@@ -1,0 +1,107 @@
+<form action="{{ route('submitForm')}}" mehtod="post">
+
+<input type="text" name="uName">
+<input type="email" name="uEmail">
+<input type="number" name="uAge">
+
+<form>
+
+ -----now make route------
+Route::post('submitForm',[UserController::class,'submit'])->name('add');
+
+---- UserContoller ------
+1. Request ki file add krna lazmi ha.
+2. validate ma key ma form ki name attribute ka name dyty hn.
+public function submit(Request $req){
+	$req->validate([
+         'uName' => 'required',
+	 'uEmail' => 'required|email',
+	 'uAge' => 'required|numeric|min:18'
+        ]);
+return $req->all();
+} 
+
+1. now ye agr koi bh validation ma error hoa to error show karga usko apny form pr show karny kaliye 
+2. errors ka parameter ma form ka name attribute ka name use hoga.  
+3. error ko show karny kalie by default variable hota ha $message ka.
+4. Data submit hony ki waja sy data bar bar empty na ho us ka liye old() funciton use karo.
+  and is ka parameter ma form ka name attribute k column ka name ayga 
+ 
+ @error('uName')
+   {{ $message }}
+ @enderror
+
+<form action="{{ route('submitForm')}}" mehtod="post">
+
+<input type="text" value="{{ old('uName') }}" name="uName" @error('uName') 'is-invalid' @enderror>
+@error('uName')
+<span class="text-danger">
+   {{ $message }}
+<span>
+ @enderror
+
+<input type="email" value="{{ old('uEmail') }}" name="uEmail" @error('uEmail') 'is-invalid' @enderror>
+@error('uEmail')
+<span class="text-danger">
+   {{ $message }}
+<span>
+ @enderror
+
+<input type="number" value="{{ old('uAge') }}" name="uAge" @error('uAge') 'is-invalid' @enderror>
+@error('uAge')
+<span class="text-danger">
+   {{ $message }}
+<span>
+ @enderror
+<form>
+
+------ in Validation error hamary form ka name attribute ki jgha custom name show karny ka triqa ------
+1. Validation.php ki file ma attributes name ka array hoga last ma. 
+2. Jo mery field ka name ha us name ki key bnao or cutome kuch or likhdo value ma.
+
+ 'attributes' => [
+	'uName' => 'User Name',
+	'uEmail' => 'User Email',
+	'uAge' => 'User Age',
+ ],
+
+------ in Validation error ko custom bnany ka liye ------
+1. Validation.php ma custom name ka array hoga us ma define karna hoga/
+2. Ye name jab bh puri web pr kahin sy bh ayengy us ka liye cutome
+
+'custom' => [
+	'attribute-name' => [
+   	  'rule-name' => 'rule ka error yahan likho.'
+ 	],
+],
+
+'custom' => [
+	'uName' => [
+   	  'required' => 'User name enter karna lazmi ha.',
+ 	],
+],
+
+
+
+------- Validation ka error ko handle controller ki file ma -----
+
+public function submit(Request $req){
+	$req->validate([
+         'uName' => 'required',
+	 'uEmail' => 'required|email',
+	 'uAge' => 'required|numeric|min:18'
+         ],
+		
+	 [
+	  'uName.required' => 'User Name is required!',
+	  'uEmail.required' => 'User Email is required!',
+	  'uAge.required' => 'User Age is required!',
+	  'uAge.numeric' => 'User Age should be numeric only!',
+	  'uAge.min:18' => 'User Age musht atleast 18.',	
+	 ]
+	);
+return $req->all();
+
+
+
+

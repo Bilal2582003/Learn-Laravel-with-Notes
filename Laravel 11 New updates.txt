@@ -1,0 +1,9 @@
+Minimun php version required 8.2
+improve Folder structure 
+Default database SQL-Lite
+Laravel Reverb - WebSocket Server
+New Once method
+model casts changing
+Per second Rate Limiting
+Eager load limit
+New Artisan command

@@ -1,0 +1,39 @@
+--- Pagination()
+  DB::table('users')->paginate(5)  
+  is ka showing formet back cursor 1 2 3 forward cursor esa hota ha.
+  is ma telwind ki css lagi hoti jis waja sy design khrab hojata ha
+ 
+  App\Provider\AppServiceProvider -> class
+   public function boot():void(){
+    Paginator::useBootstrapFive();
+   }
+
+
+--- simplePaginate()
+1. Is ma agar koi number na dia jay to 15 iski default value hoti ha.
+  DB::table('users')->simplePaginte(5)
+  iska format previous and next btn wala hota ha
+ 
+--- cursorPaginate()
+  Is ko ham order by ka alawa use nahi karsty
+  iski pagination and process both fast hota ha
+  DB::table('users')->orderBy('id')->cursorPaginate(5)
+
+
+  Blade file ma {{ $data->links() }} lagany sy pagination html ma show hony lag jati h
+
+  Pagination function ka sat or bh parameter aty hn jesy
+  ->paginate(5, ['col'], 'p', 3)
+   . no of row
+   . ['colName', 'colName']  which column do you want to select from db
+   . 'p'   page_id likha ata ha url ma usko fix krny ka liye
+   . no of page   jo page ap by default show karna cahty hn.
+ 
+
+
+is ma pagination ka sat use karny ka or bh functions hn jesy
+->append([])    is function sy ap apni marzy sy data url ma pass karskty hn pagination ka sat
+->fregment('') is function sy ap bh url ma data ata ha jesy php ma key dyty hn
+
+
+

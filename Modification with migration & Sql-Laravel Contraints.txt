@@ -1,0 +1,75 @@
+two type of modifications
+1. Columns modification
+2. Table modification
+
+----- Column modifiction -----
+	. Add new column
+	. Rename column
+	. Delete column
+	. Change Column order
+	. Change datatype or size of column
+----- Table Modification -----
+	. Rename Table.
+	. Delete Table.
+
+----- Add Column -----
+1. Add column -> php artisan make:migration update_tableName_table --table=tableName.
+2. Enter this migration file. Look after Schema::table is written here while there was Schema::create 
+   at the time of table creation.
+3. Under this Schema function write your column name which you want to add -> $table->string('city',100)
+4. now migrate by command -> php artisan migrate.
+
+---- Add Column After perticual column -----
+1. in migration file you have to make new function Schema::after then add column as we do nomally
+ 
+----- Rename Column -----
+jo migratoin new bnai ha update ka liye us ma ja kar ye likho
+$table->renameColumn('Old_name', 'new_name');
+
+----- Delete Column -----
+$table->dropColumn('city');
+   For multiple columns
+$table->dropColumn(['city','location','an_other_phone']);
+
+----- Chagne datatype and size of column -----
+$table->string('name',50)->change();
+   For multiple changes in one column
+$table->integer('vote')->unsigned()->default(1)->comment('my comment for user understanding')->change();
+
+----- For check column exits or not -----
+if(Schema::hasColumn('tableName','columnName')){
+
+}
+
+----- For check table exits or not -----
+if(Schema::hasTable('tableName')){
+ 
+}
+
+----- Rename table -----
+1. Up function ma direct use kro
+Schema::rename('oldName', 'newName');
+
+----- Delete Table -----
+1. Up function ma direct use kro
+Schema::dropIfExits('tableName');
+
+
+-------- Contrainrs With migration --------
+1. Not null -> $table->string('city')->nullable();
+2. Unique -> $table->string('city')->unique();
+3. Default -> $table->string('city')->default('Karachi');
+4. Primary Key -> $table->primary('user_id');
+5. Forign Key -> $table->forign('user_id')->references('id')->on('users')
+6. Check -> DB::statement('ALTER TABLE users ADD CONSTRAINT age CHECK(age > 18);');
+
+-------- Laravel Modifier -----------
+1. ->after('column')	Place the column after another column.
+2. ->autoIncrement()	Set Integer column as auto-increment (primary key).
+3. ->comment('my comment')	Add a comment to a column
+4. ->first()	Place the column first in the table
+5. ->from($integer)	Set the stating value of an auto-increment field 
+6. ->invisible()	make the column invisible to SELECT * queries
+7. ->unsigned()		Set integer column as unsigned
+8. ->useCurrent()		Set timestamp column to use current_timestamp as default value.
+9. ->userCurrentOnUpdate()	Set timestamp column to use Current_timestamp when  a record id updated 

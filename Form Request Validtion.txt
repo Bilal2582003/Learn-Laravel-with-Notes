@@ -1,0 +1,73 @@
+1. Request validation ma ham khud ki request ki file bnaty hn jis ki directory
+app/Http/Requests 
+
+--making request file command--
+ php artisan make:request UserRequest
+
+2. is file ma runciton bnaengy rules ka name sy name is ma return krengy.
+ and is ma as a key apny form ki field ka name attribute ka name (name="username"). and value ma validation lagani ha
+3. is file ma authorize ka funciton hota ha jo true or false return karta ha is ma true hoga to hi validations kam krengy wrna nh.
+class UserRequest extends FormRequest{
+ public function rules(){
+  return [
+   'username' => 'required',
+   'useremail' => 'required|email',
+   ];
+  } 
+}
+
+3. ab apny controller ma UserRequest ki ya jo bh file bnai ha usko call kro.
+4. ab hmen apny controller ki file ma mazed vaidation laga ny zrort nh ha. jo error hongy jesy normally use hot ha wesy hi run hongy
+ public function addUser(UserRequest $req){
+  $return $req->all();
+  }
+
+5. agar hmen  khud ka sms bh show karny hn messages ma to UserRequest ki file ma messages name ka function bnao jo laravel ka messages walo function ko override kardyg.
+ public function messages(){
+  return[
+   "username.request" => 'User Name enter karna zrori h.',
+   "useremail.request" => 'User Email enter karna zrori h.',
+   "useremail.email" => 'Please enter correct email address',
+   ]; 
+ }
+ 
+
+6. Agar attribute ka name hi custom sms ma show karna ha to.
+
+ public function messages(){
+  return[
+   "username.request" => ':attribute enter karna zrori h.',
+   "useremail.request" => ':attribute enter karna zrori h.',
+   "useremail.email" => ':attribute correct email address',
+   ]; 
+ }
+
+7. agar ham cahty hn sms laravel ka ho jab ka attribute ka name hm set kren to us ka liye attributes name ka function ata ha
+
+ public function attributes(){
+  return [
+    'username' => 'User Name', 
+    'useremail' => 'User Email', 
+  ];
+ }
+
+--------- Agar ham khua ka kuch condition lagani ha jesy uppercase or make string slug ----
+1. Jo request ki file bnai ha us ma protected function bnyga.
+2. Is function ka name same rhyga. ye function void hota ha jo kuch return nahi karta 
+3. Is ma jo condition lagani ha vo laga skty hn. 
+4. Str:: ye laravel ka apna object ha jis ma string ka bht sary funciton hn.
+   iska liye file include karni hogi.
+   illuminate\Support\Str;
+protected function prepareForValidation(): void {
+ $this->merge([
+    'username'=> strtoupper($this->username);
+    'username'=> STR::slug($this->username);
+   ]) ; 
+ } 
+
+------ Agar ham cahty hn ka form ma line by line 1 1 kar kar error show hon us ka liue ----
+1. jo Request file bnai ha validation ka liye us ma last ma ye line add krdo main ma.
+2. $stopOnFirstFailure ye 1 super global variable ha and iski type protected hogi.
+3. By default iski value false hoti ha q ka laravel sary error sms 1 sat show karta ha.
+4. isko agar true kardengy to error one by one show hongy. 
+ protected $stopOnFirstFailure = true;

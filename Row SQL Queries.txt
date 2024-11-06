@@ -1,0 +1,62 @@
+1. Row SQL use for custom sql queries in our projects.
+
+2. For use it. We need to add. 
+   use illuminate\Support\Facades\DB;
+
+ ------ SELECT -------
+DB::select('SELECT * from users');
+DB::select('SELECT * from users where id = ?', [2]);
+
+ ------ INSERT ------
+DB:insert('insert into students(name,age)values(?,?)', ['Bilal', 21]);
+
+ ------ UPDATE -------
+DB::update('update users set email = "test@gmail.com" where id = ?', [2]);
+
+ ------ DELETE -------
+DB::delete('DELETE from users where id = ?', [2]);
+
+
+ ------ SQL BINDING ------
+  Binding ma ham ? ki jgha colon (:) and database ka column ka name dyty hn jesy (:id) and query ka bad array ma apny column ka name and
+  uska against value dyni hoti ha jesy  ['id' => 3]
+ DB::select('SELECT * from users where id = :id', ['id'=>3]);
+
+
+ ------ STATEMENT ------ 
+1. is ma hm vo wali sql command pass karty hn jis ka result ma ham koi return nahi dekhna cahty hn. Jesy drop tables command.
+2. is ka liye bh DB use karengy and header ma file bh include krengy 
+   use illuminate\Support\Facades\DB;
+
+DB::statement('drop table students');
+
+ ------ Un Prepared ------
+1. is query ma ham koi si bh query likh sakty hn but ye triqa secure nh ha. and is ma values direct pass hojati hn ? use karny ki need nahi hoti.
+2. is ka liye bh DB ko include karna zrori ha.
+
+DB::unprepared('DELETE from students where id = 5');
+
+ ------ RAW METHOD FOR QUERY BUILDER ------
+     <-- SELECT RAW -->
+DB::table('students')->select('id','name','city')->get();
+    we can use this query builder query with raw patter.
+DB::table('students')->selectRaw('id,name,city')->get();
+     
+     <-- WHERE RAW AND ORDER BY -->
+DB::table('students')->where('id','>',10)->get();
+    we can use this query builder query with raw patter.
+DB::table('students')->whereRaw('id > 10')->get();
+
+	---- not secure----
+DB::table('students')->whereRaw('id > 10 and city like "karachi%"')->orderByRaw('name')->get();
+	----- secure -----
+DB::table('students')->selectRaw('name, age')->whereRaw('age > ? and city like ?', [19, 's%'])->orderbyRaw('age, name')->get();
+
+---- group by -----
+DB::table('students')->selectRaw('count.* as student_count, age')->groupBy('age')->get();
+or 
+DB::table('studnets')->select(DB::raw('count.* as student_count'), 'age')->groupBy('age')->get()
+
+ 
+----------- Check query to show in SQL form use ->toSql() ----
+DB::table('studnets')->select(DB::raw('count.* as student_count'), 'age')->groupBy('age')-toSql()

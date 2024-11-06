@@ -1,0 +1,32 @@
+------if i make php variable------
+  @php
+	$userName = "Bilal";
+  @endphp
+
+  <script>
+	var user = @json($userName);
+		or
+	var user = {{ Js::from($userName) }};
+	
+	console.log(user)
+  </script>
+
+-----if we want to add page link use @stact -----
+1. Make stact in your layout page.
+	@stack('stack_name')
+
+2. Now use in your extended page
+	@push('stack_name')
+ 	  <link href="styleSheet.css">
+	@endpush
+-----if we want to add style in blade templete we can use @prepend-----
+1. We can direct use in our pages.
+2. Prepend ka parameter ma kis jis section/stack sy phly lagana ho uska name.
+
+  @prepend(my section name at above i want to place)
+	<style>
+	  #mainId{
+		background-color:tan;
+		}
+	</style>
+  @endprepend

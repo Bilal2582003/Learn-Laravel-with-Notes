@@ -1,0 +1,82 @@
+1. Basic Controller.
+2. Single Action Controller.
+3. Resource Controller.
+
+-----create controller command-----
+php artisan make:controller controller_name
+
+-----Route set with controller------
+  Route::get('/list',[controller_name::class,'show'])->name('index')
+  Route::get('/create',[controller_name::class,'add'])->name('create')
+
+-----Group Controller in Route-----
+1. if we want to use same controller_name is my routes so i can set route like this.
+
+  Route::controller(controller_name::class)->group(function(){
+	Route::get('/list','show')->name('index')
+	Route::get('/create','add')->name('create')
+  })
+
+----- Single Action Controller -----
+php artisan make:controller controller_name --invokable
+or php artisan make:controller controller_name --i
+
+1. we do not need to call in our route it call automatically when we hit this controller.
+2. There should not any other function apart from __invoke() function.
+
+-----Route for invoke controller-----
+Route::get('/test',controller_name::class);
+
+
+------- Resource Controller -------
+php artisan make:controller controllerName --resource
+
+is controller ma hmen by default 7 method milty hn.
+1. index(){}
+2. create(){}
+3. store(Request $req){}
+4. show(User $user){}
+5. edit(User $user){}
+6. update(Request $req, User $user){}
+7. destroy(User $user){}
+
+--- Resource method ka liye hm route ko short hand bh use karskty hn
+ Route::resource('users', UserController::class);
+
+VERB		URL			ACTION		ROUTE NAME
+GET		/users			index		users.index
+GET		/users/create/		create		users.create
+POST		/users			store		users.store
+GET		/users/{user}		show		users.show
+GET		/user/{user}/edit	edit		users.edit
+PUT/PATCH	/user/{user}		update		users.update
+DELETE		/user/{user}		destroy		users.destroy
+
+--agar mujhy sary route use nahi karny perticular use karny hn to route esy bnao
+ Route::resource('users', UserController::class)->only([
+   'create', 'update', 'show'
+]);
+
+--mujhy jo routes use nahi karny---
+ Route::resource('users', UserController::class)->except([
+   'destory','update'
+]);
+
+--- mujhy agar routes ka name change karny hn -----
+ Route::resource('users', UserController::class)->names([
+   'create' => 'users.add',
+   'update' => 'users.change'
+]);
+
+
+--- Making Route For Multiple Resource Controller ---
+Route::resource([
+	'users' => UserController::class,
+	'post' => PostController::class 
+])
+
+
+
+
+
+

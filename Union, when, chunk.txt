@@ -1,0 +1,57 @@
+1. sab sy phly controller bnao then us ka route bnao controller ma method create kro jis ma query chalani ha.
+
+------ Union ------ 
+1. Union ma dono tables ka no of column, name of columns, data type of column same hona chiye. 
+public function uniondadta(){
+	$lectureres = DB::table('lacturers');
+	$students = DB::table('student')->union($lectureres)->get();
+}
+
+2. agar perticular columns ko SELECT krna hoto
+   $lectureres = DB::table('lacturers')->select('name', 'email');
+   $stude nts = DB::table('student')->union($lectureres)->select('name','email')->get(); 
+
+3. agr Join karna hoto
+   $lectureres = DB::table('lacturers')->select('name', 'email','city_name')->join('cities','cities.id','=','lactureres.city');
+   $stude nts = DB::table('student')->union($lectureres)->select('name','email','city_name')->join('cities','cities.id','=','student.city')->get(); 
+
+---- If we want to show data in sql form (show query) so use ---
+ ->toSql();
+$stude nts = DB::table('student')->union($lectureres)->select('name','email','city_name')->join('cities','cities.id','=','student.city')->toSql(); 
+
+
+--------- When Data ----------
+1. when function ham use karty hn jab hmen query ma koi addition karna ha kisi condition pr.
+2. jes if else condition ma ture false conditon hoti ha when ma bh hm use karskty hn.
+$student = DB::table('student')->when(true, function($query){ 
+  $query->where('age' > 20);
+ })->get();
+
+$student = DB::table('student')->when(true, function($query){ 
+  $query->where('age' > 20);
+ }, function($query){
+$query->where('age' < 20);
+})->get();
+
+
+------ Chunks ------
+1. is ma order by laga lazmi ha 
+2. chunk data is query ka lehaz sy 3 3 ka hison ma load hoga jis sy memory pr load nh ayga zada tar large data ka liye use hota ha.
+
+$students =  DB::table('student')->orderBy('id')
+ ->chunk(3, funciton($students){
+   foreach($students as $student){
+      echo $name;
+    }
+ });
+
+3. Chunk sy data update and delete bh kar skty hn. 
+   magar uska liye chunkById ka use karengy magr sirf jab jis waqat data hazaron ma update or delete hon gy.
+4. chunkById sy select bh kar skty hn.
+ 
+$students =  DB::table('student')->orderBy('id')
+ ->chunkById(3, funciton($students){
+   foreach($students as $student){
+      echo $name;
+    }
+ });
